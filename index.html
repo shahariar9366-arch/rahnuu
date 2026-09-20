@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>For My Rahnuu ❤️</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Georgia, "Times New Roman", serif;
+    background: #120812;
+    color: white;
+    overflow-x: hidden;
+}
+
+.page {
+    position: absolute;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 15px 20px;
+    overflow-y: auto;
+
+    background:
+        radial-gradient(circle at top, #571b47 0%, #210c20 45%, #080508 100%);
+}
+
+.page.active {
+    display: flex;
+    animation: pageIn 0.7s ease;
+}
+
+@keyframes pageIn {
+    from {
+        opacity: 0;
+        transform: scale(0.96);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.card {
+    width: min(850px, 92vw);
+    min-height: 60vh;
+    padding: 30px 25px;
+    margin: auto 0;
+
+    border-radius: 25px;
+
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.15);
+
+    backdrop-filter: blur(15px);
+
+    box-shadow:
+        0 20px 80px rgba(0,0,0,0.6);
+
+    text-align: center;
+}
+
+h1 {
+    font-size: clamp(34px, 6vw, 65px);
+    margin-bottom: 15px;
+}
+
+h2 {
+    font-size: clamp(26px, 4.5vw, 45px);
+    margin-bottom: 18px;
+}
+
+h3 {
+    font-size: clamp(20px, 3.5vw, 28px);
+    margin-bottom: 10px;
+    color: #ffb3d1;
+}
+
+p {
+    font-size: 17px;
+    line-height: 1.7;
+    color: #f7eaf3;
+    white-space: pre-line;
+}
+
+.small {
+    font-size: 13px;
+    color: #cdbdca;
+    margin-top: 12px;
+}
+
+.heart {
+    font-size: 45px;
+    animation: heartbeat 1.5s infinite;
+}
+
+@keyframes heartbeat {
+    50% {
+        transform: scale(1.2);
+    }
+}
+
+button {
+    border: none;
+    border-radius: 50px;
+    padding: 12px 24px;
+    margin: 8px;
+
+    background: white;
+    color: #421536;
+
+    font-size: 15px;
+    cursor: pointer;
+
+    transition: 0.25s;
+
+    box-shadow: 0 8px 25px rgba(0,0,0,0.35);
+}
+
+button:hover {
+    transform: translateY(-4px) scale(1.03);
+}
+
+.btn-secondary {
+    background: rgba(255,255,255,0.2);
+    color: white;
+}
+
+input {
+    width: min(340px, 90%);
+
+    padding: 14px 18px;
+
+    border-radius: 50px;
+
+    border: none;
+
+    font-size: 16px;
+
+    text-align: center;
+
+    outline: none;
+}
+
+.error {
+    color: #ff9abb;
+    margin-top: 10px;
+    min-height: 22px;
+}
+
+.media {
+    width: min(650px, 95%);
+    height: 240px;
+    margin: 18px auto;
+    border-radius: 18px;
+    border: 1px solid rgba(255,255,255,0.2);
+    background: rgba(0,0,0,0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #d7c8d4;
+    font-size: 16px;
+    overflow: hidden;
+}
+
+.media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* ========================= */
+/* VIDEO / SLIDESHOW PLAYER  */
+/* ========================= */
+
+.video-slideshow {
+    position: relative;
+    width: min(650px, 95%);
+    height: 380px;
+    margin: 18px auto 10px auto;
+    border-radius: 18px;
+    border: 1px solid rgba(255,255,255,0.2);
+    background: #000;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 1s ease-in-out, transform 4s ease-out;
+    transform: scale(1.05);
+}
+
+.slide.active {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.slideshow-controls {
+    position: absolute;
+    bottom: 12px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    z-index: 10;
+}
+
+.play-btn {
+    background: rgba(255,255,255,0.85);
+    color: #210c20;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+}
+
+.dots {
+    display: flex;
+    gap: 8px;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.4);
+    transition: 0.3s;
+}
+
+.dot.active {
+    background: #ffb3d1;
+    transform: scale(1.3);
+}
+
+.lyrics-box {
+    margin: 10px auto 20px auto;
+    padding: 12px 20px;
+    min-height: 60px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 12px;
+    max-width: 550px;
+    border: 1px solid rgba(255,255,255,0.15);
+}
+
+.lyrics-text {
+    font-style: italic;
+    color: #ffb3d1;
+    font-size: 16px;
+    transition: opacity 0.5s ease;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin-top: 20px;
+}
+
+.memory {
+    min-height: 160px;
+    padding: 18px;
+    border-radius: 18px;
+    border: 1px solid rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.reveal {
+    display: none;
+    margin: 14px auto;
+    padding: 18px;
+    max-width: 550px;
+    border-radius: 18px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.btn-group {
+    margin-top: 15px;
+}
+
+.question-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100px;
+    margin-top: 20px;
+}
+
+#noBtn {
+    transition: transform 0.2s ease;
+}
+
+@media(max-width:650px) {
+    .card {
+        padding: 22px 16px;
+    }
+    .grid {
+        grid-template-columns: 1fr;
+    }
+    p {
+        font-size: 16px;
+    }
+    .video-slideshow {
+        height: 280px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- Background Audio Player -->
+<audio id="bg-music" src="song.mp3" loop preload="auto"></audio>
+
+<!-- ========================= -->
+<!-- PAGE 0 : COVER -->
+<!-- ========================= -->
+
+<section class="page active" id="p0">
+
+<div class="card">
+
+<div class="heart">❤️</div>
+
+<h1>For My Rahnuu</h1>
+
+<p>
+Three years of us.
+
+Three years of memories,
+smiles,
+arguments,
+forgiveness,
+and love.
+</p>
+
+<p class="small">
+27 September 2023 → 27 September 2026
+</p>
+
+<button onclick="startExperience(1)">
+Tap to begin ❤️
+</button>
+
+</div>
+
+</section>
+
+
+<!-- ========================= -->
+<!-- PAGE 1 : PASSWORD -->
+<!-- ========================= -->
+
+<section class="page" id="p1">
+
+<div class="card">
+
+<h2>🔐 A Little Secret</h2>
+
+<p>
+Only you are supposed to enter
+this little world.
+</p>
+
+<br>
+
+<input
+id="password"
+type="password"
+placeholder="Enter our password"
+>
+
+<div class="error" id="error"></div>
+
+<div class="btn-group">
+    <button class="btn-secondary" onclick="go(0)">← Back</button>
+    <button onclick="unlock()">Enter ❤️</button>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ========================= -->
+<!-- PAGE 2 : OUR STORY -->
+<!-- ========================= -->
+
+<section class="page" id="p2">
+
+<div class="card">
+
+<h2>Our Story 📖</h2>
+
+<div class="media">
+    <img src="pic1.jpg" alt="Holding Hands Photo">
+</div>
+
+<p>
+[WRITE YOUR STORY HERE]
+</p>
+
+<div class="btn-group">
+    <button class="btn-secondary" onclick="go(1)">← Back</button>
+    <button onclick="go(3)">Continue →</button>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ========================= -->
+<!-- PAGE 3 : MEMORIES -->
+<!-- ========================= -->
+
+<section class="page" id="p3">
+
+<div class="card">
+
+<h2>Our Memories 📸</h2>
+
+<p>
+Every picture has a story.
+</p>
+
+<div class="grid">
+
+<div class="memory">
+[PHOTO 1]
+</div>
+
+<div class="memory">
+[PHOTO 2]
+</div>
+
+<div class="memory">
+[PHOTO 3]
+</div>
+
+<div class="memory">
+[PHOTO 4]
+</div>
+
+</div>
+
+<div class="btn-group">
+    <button class="btn-secondary" onclick="go(2)">← Back</button>
+    <button onclick="go(4)">Next →</button>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ========================= -->
+<!-- PAGE 4 : LETTER -->
+<!-- ========================= -->
+
+<section class="page" id="p4">
+
+<div class="card">
+
+<h2>💌 Open My Letter</h2>
+
+<p>
+[WRITE YOUR LETTER HERE]
+</p>
+
+<div class="btn-group">
+    <button class="btn-secondary" onclick="go(3)">← Back</button>
+    <button onclick="go(5)">I have more to say ❤️</button>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ========================= -->
+<!-- PAGE 5 : THINGS I LOVE -->
+<!-- ========================= -->
+
+<section class="page" id="p5">
+
+<div class="card">
+
+<h2>Things I Love About You 🌹</h2>
+
+<p>
+Tap the hearts one by one.
+</p>
+
+<button onclick="reveal('r1')">
+❤️ One
+</button>
+
+<button onclick="reveal('r2')">
+❤️ Two
+</button>
+
+<button onclick="reveal('r3')">
+❤️ Three
+</button>
+
+<div class="reveal" id="r1">
+<h3>Your Support</h3>
+<p>I love how you r always there for me, no matter what. You stayed, waited, and supported me through my worst days when you could've walked away. You make even the most worst days feel special, and knowing I have you, is blessing for me🤍</p>
+</div>
+
+<div class="reveal" id="r2">
+<h3>Your Beauty💗</h3>
+<p>I love your eyes because I could get lost in them forever, your smile because it makes my lifee more better. The way you laugh, the way you look, and all your little expressions make my heart melt every time. You're the prettiest girl in my eyes, and every single day i fall more in lovee with your beauty</p>
+</div>
+
+<div class="reveal" id="r3">
+<h3>Everything about you</h3>
+<p>There’s so much I love about you that I could never fit it all into words. To me, you're the perfect woman the one I think about before I sleep and the one I want beside me in every future memory. You make my heart feel at home, and every day feels brighter because you're in it. You're the best presence in my life, and I’ll loveeee you forever ever and ever💗</p>
+</div>
+
+<div class="btn-group">
+    <button class="btn-secondary" onclick="go(4)">← Back</button>
+    <button onclick="go(6)">Next →</button>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ========================= -->
+<!-- PAGE 6 : VIDEO SLIDESHOW -->
+<!-- ========================= -->
+
+<section class="page" id="p6">
+
+<div class="card">
+
+<h2>Our Video 🎥</h2>
+
+<!-- Photo Video Player -->
+<div class="video-slideshow">
+    <div class="slide active"><img src="pic1.jpg" alt="Holding hands in car"></div>
+    <div class="slide"><img src="pic2.jpg" alt="Romantic portrait together"></div>
+    <div class="slide"><img src="pic3.jpg" alt="Sunlight selfie together"></div>
+    <div class="slide"><img src="pic4.jpg" alt="Video call moment"></div>
+    <div class="slide"><img src="pic5.jpg" alt="Shopping aisle selfie"></div>
+    <div class="slide"><img src="pic6.jpg" alt="Cozy moment"></div>
+    <div class="slide"><img src="pic7.jpg" alt="Playful pose together"></div>
+
+    <div class="slideshow-controls">
+        <button class="play-btn" id="playPauseBtn" onclick="toggleSlideshow()">⏸</button>
+        <div class="dots" id="dotsContainer"></div>
+    </div>
+</div>
+
+<!-- Dynamic Lyrics Section for Perfect -->
+<div class="lyrics-box">
+    <p class="lyrics-text" id="lyricDisplay">"Baby, I'm dancing in the dark with you between my arms..."</p>
+</div>
+
+<p>
+Every moment captured with you feels like a beautiful dream I never want to wake up from. ❤️
+</p>
+
+<div class="btn-group">
+    <button class="btn-secondary" onclick="go(5)">← Back</button>
+    <button onclick="go(8)">One last thing… →</button>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ========================= -->
+<!-- PAGE 8 : QUESTION -->
+<!-- ========================= -->
+
+<section class="page" id="p8">
+
+<div class="card">
+
+<h2>One Last Question ❤️</h2>
+
+<p>
+After everything we've been through…
+
+Would you choose me again?
+</p>
+
+<div class="question-container">
+    <button onclick="go(9)">
+    YES ❤️
+    </button>
+
+    <button id="noBtn" onmouseover="moveNoButton()" onclick="moveNoButton()">
+    NO 💔
+    </button>
+</div>
+
+<div class="btn-group">
+    <button class="btn-secondary" onclick="go(6)">← Back</button>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ========================= -->
+<!-- PAGE 9 : FINAL -->
+<!-- ========================= -->
+
+<section class="page" id="p9">
+
+<div class="card">
+
+<div class="heart">❤️</div>
+
+<h1>3 Years.</h1>
+<h2>And I still choose you.</h2>
+
+<p>
+Happy 3rd Anniversary,
+Rahnuma. ❤️
+
+27 September 2026
+</p>
+
+<!-- RESTORED FINAL PHOTO CONTAINER BELOW -->
+<div class="media">
+    <img src="final_photo.jpg" alt="Final Anniversary Photo">
+</div>
+
+<p class="small">
+Made with love by Mahir
+</p>
+
+<div class="btn-group">
+    <button class="btn-secondary" onclick="go(8)">← Back</button>
+</div>
+
+</div>
+
+</section>
+
+
+<script>
+
+/* ========================= */
+/* AUDIO & NAVIGATION SETUP  */
+/* ========================= */
+
+const PASSWORD = "1234";
+let current = 0;
+let musicStarted = false;
+
+function playAudio() {
+    const music = document.getElementById("bg-music");
+    if (!musicStarted && music) {
+        music.play().then(() => {
+            musicStarted = true;
+        }).catch(err => {
+            console.log("Audio playback waiting for interaction: ", err);
+        });
+    }
+}
+
+function startExperience(targetPage) {
+    playAudio();
+    go(targetPage);
+}
+
+function go(page) {
+    if (page < 0 || page > 9) return;
+
+    document.querySelectorAll(".page").forEach(function(p) {
+        p.classList.remove("active");
+    });
+
+    document.getElementById("p" + page).classList.add("active");
+    current = page;
+
+    if (page === 6 && !slideshowInterval) {
+        startSlideshow();
+    }
+}
+
+function unlock() {
+    playAudio();
+    const entered = document.getElementById("password").value;
+    if (entered === PASSWORD) {
+        document.getElementById("error").textContent = "";
+        go(2);
+    } else {
+        document.getElementById("error").textContent = "Wrong password ❤️ Try again.";
+    }
+}
+
+function reveal(id) {
+    const element = document.getElementById(id);
+    if (element.style.display === "block") {
+        element.style.display = "none";
+    } else {
+        element.style.display = "block";
+    }
+}
+
+function moveNoButton() {
+    const btn = document.getElementById("noBtn");
+    const x = Math.floor(Math.random() * 240) - 120;
+    const y = Math.floor(Math.random() * 160) - 80;
+    btn.style.transform = `translate(${x}px, ${y}px)`;
+}
+
+
+/* ========================================= */
+/* SLIDESHOW & ED SHEERAN LYRICS SYSTEM     */
+/* ========================================= */
+
+const lyrics = [
+    '"Baby, I\'m dancing in the dark with you between my arms..."',
+    '"Barefoot on the grass, listening to our favourite song..."',
+    '"When you said you looked a mess, I whispered underneath my breath..."',
+    '"But you heard it, darling, you look perfect tonight..."',
+    '"Well I found a woman, stronger than anyone I know..."',
+    '"She shares my dreams, I hope that someday I\'ll share her home..."',
+    '"I found a love, to carry more than just my secrets..."'
+];
+
+let slideIndex = 0;
+let slideshowInterval = null;
+let isPlaying = false;
+
+const dotsContainer = document.getElementById("dotsContainer");
+const slides = document.querySelectorAll(".slide");
+
+slides.forEach((_, idx) => {
+    const dot = document.createElement("div");
+    dot.classList.add("dot");
+    if (idx === 0) dot.classList.add("active");
+    dotsContainer.appendChild(dot);
+});
+
+const dots = document.querySelectorAll(".dot");
+
+function showSlide(index) {
+    slides.forEach(s => s.classList.remove("active"));
+    dots.forEach(d => d.classList.remove("active"));
+
+    slides[index].classList.add("active");
+    dots[index].classList.add("active");
+
+    const lyricDisplay = document.getElementById("lyricDisplay");
+    lyricDisplay.style.opacity = 0;
+    setTimeout(() => {
+        lyricDisplay.textContent = lyrics[index % lyrics.length];
+        lyricDisplay.style.opacity = 1;
+    }, 250);
+}
+
+function nextSlide() {
+    slideIndex = (slideIndex + 1) % slides.length;
+    showSlide(slideIndex);
+}
+
+function startSlideshow() {
+    if (!slideshowInterval) {
+        // 4040 milliseconds = 4.04 seconds per photo (28.28 seconds total for 7 photos)
+        slideshowInterval = setInterval(nextSlide, 4040);
+        isPlaying = true;
+        document.getElementById("playPauseBtn").textContent = "⏸";
+    }
+}
+
+function toggleSlideshow() {
+    if (isPlaying) {
+        clearInterval(slideshowInterval);
+        slideshowInterval = null;
+        isPlaying = false;
+        document.getElementById("playPauseBtn").textContent = "▶";
+    } else {
+        startSlideshow();
+    }
+}
+
+</script>
+
+</body>
+</html>
